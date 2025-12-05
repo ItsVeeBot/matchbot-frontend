@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import type { Route } from "./+types/display";
 import { animated, useSpring } from "@react-spring/web"
-import IonIconClient from "~/modules/ionIconClient";
+import IonIconClient from "~/modules/IonIconClient";
 
 export function meta({}: Route.MetaArgs) {
   return [
