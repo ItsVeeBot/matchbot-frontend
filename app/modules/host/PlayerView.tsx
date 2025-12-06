@@ -16,6 +16,8 @@ export default function PlayerView(props: PlayerViewProps){
     const [locked, setLocked] = useState(false)
     const [playerName, setPlayerName] = useState("Panelist " + props.playerId)
     const [cardText, setCardText] = useState("...")
+    const [displayCopied, setDisplayCopied] = useState(false)
+    const [playerCopied, setPlayerCopied] = useState(false)
 
 
     const handleSetPlayerName = (event: ChangeEvent<HTMLInputElement>) =>{
@@ -49,6 +51,32 @@ export default function PlayerView(props: PlayerViewProps){
         // TODO: Play buzz sfx
         props.socket.emit("setLocked", props.playerId, false)
     }
+
+    const toggleVisibility = () => {
+        props.socket.emit("setVisible", props.playerId, !visible)
+    }
+
+    const copyDisplayToClipboard = () => {
+        setDisplayCopied(true)
+        navigator.clipboard.writeText(window.location.origin+"/display/"+props.playerId)
+    }
+    useEffect(() => {
+        if (displayCopied) {
+            const timer = setTimeout(() => setDisplayCopied(false), 2000)
+            return () => clearTimeout(timer)
+        }
+    }, [displayCopied])
+
+    const copyPlayerToClipboard = () => {
+        setPlayerCopied(true)
+        navigator.clipboard.writeText(window.location.origin+"/play/"+props.playerId)
+    }
+    useEffect(() => {
+        if (playerCopied) {
+            const timer = setTimeout(() => setPlayerCopied(false), 2000)
+            return () => clearTimeout(timer)
+        }
+    }, [playerCopied])
 
     useEffect(()=>{
         props.socket.on("submit", (room, text:string)=>{
@@ -110,22 +138,26 @@ export default function PlayerView(props: PlayerViewProps){
                     <IonIconClient name="ellipse" size="medium" className={`text-xl ${circle ? "text-red-300" : "text-red-800"}`} />
                 </div>
             </div>
-            <div className="flex justify-center">
-                <button className="flex rounded-md bg-green-400 m-2 p-2" onClick={correctAnswer}>
-                        <IonIconClient name="checkmark" className="text-4xl" />
-                </button>
-                <button className="flex rounded-md bg-red-400 m-2 p-2" onClick={incorrectAnswer}>
-                        <IonIconClient name="close" className="text-4xl" />
-                </button>
-                <button className="flex rounded-md bg-blue-400 m-2 p-2">
-                        <IonIconClient name="eye" className="text-4xl" />
-                </button>
-                <button className="flex rounded-md bg-blue-400 m-2 p-2">
-                        <IonIconClient name="tv" className="text-4xl" />
-                </button>
-                <button className="flex rounded-md bg-blue-400 m-2 p-2">
-                        <IonIconClient name="game-controller" className="text-4xl" />
-                </button>
+            <div className="flex justify-center gap-2">
+                <div className="flex border border-default rounded-lg">
+                    <button className="flex rounded-md bg-green-400 m-2 p-2" onClick={correctAnswer}>
+                            <IonIconClient name="checkmark" className="text-4xl" />
+                    </button>
+                    <button className="flex rounded-md bg-red-400 m-2 p-2" onClick={incorrectAnswer}>
+                            <IonIconClient name="close" className="text-4xl" />
+                    </button>
+                    <button className="flex rounded-md bg-blue-400 m-2 p-2" onClick={toggleVisibility}>
+                            <IonIconClient name="eye" className="text-4xl" />
+                    </button>
+                </div>
+                <div className="flex border border-default rounded-lg">
+                    <button className="flex rounded-md bg-blue-400 m-2 p-2" onClick={copyDisplayToClipboard}>
+                            <IonIconClient name={displayCopied ? "checkmark" : "tv"} className="text-4xl" />
+                    </button>
+                    <button className="flex rounded-md bg-blue-400 m-2 p-2" onClick={copyPlayerToClipboard}>
+                            <IonIconClient name={playerCopied ? "checkmark" : "game-controller"} className="text-4xl" />
+                    </button>
+                </div>
             </div>
         </div>
     )

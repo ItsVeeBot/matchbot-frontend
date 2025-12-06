@@ -30,7 +30,7 @@ export default function Host() {
     socket.emit("subscribe", "all")
   }, [])
   
-  const buttonClass = "rounded-md bg-blue-400 p-2"
+  const buttonClass = "rounded-md bg-blue-400 p-2 w-full"
 
   const playerViews = []
   for(let i=1; i<=6; i++){
@@ -61,15 +61,38 @@ export default function Host() {
           </div>
           <div className="border border-default rounded-lg">
             <div className="font-semibold">Game Controls</div>
-            <div className="border-t rounded-lg p-2">
+            <div className="border-t rounded-lg p-2 flex flex-col gap-2">
               <button className={buttonClass} onClick={resetAllScores}>Reset all scores</button>
             </div>
           </div>
           <div className="border border-default rounded-lg">
             <div className="font-semibold">Twitch Integration Controls</div>
+            <div className="border-t rounded-lg p-2 flex flex-col gap-2">
+              <div className="flex gap-2">
+                <button className={buttonClass}>Connect Twitch</button>
+                <button className={buttonClass}>Clear Signups</button>
+              </div>
+              <div className="flex gap-2">
+                <button className={buttonClass}>Open Signups</button>
+                <button className={buttonClass}>Close Signups</button>
+              </div>
+              <div className="flex gap-2">
+                <button className={buttonClass}>Select Players</button>
+              </div>
+            </div>
           </div>
           <div className="border border-default rounded-lg">
             <div className="font-semibold">Think Music Controls</div>
+            <div className="border-t rounded-lg p-2 flex flex-col gap-2">
+              <button className={buttonClass}>Stop</button>
+              <button className={buttonClass}>Random</button>
+              <div className="flex gap-2">
+                <button className={buttonClass}>1</button>
+                <button className={buttonClass}>2</button>
+                <button className={buttonClass}>3</button>
+                <button className={buttonClass}>4</button>
+              </div>
+            </div>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4">
