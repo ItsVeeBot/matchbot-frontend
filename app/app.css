@@ -6,3 +6,24 @@
   --font-hand: "Knewave", ui-sans-serif, system-ui, sans-serif;
   --font-egg: "Doto", ui-sans-serif, system-ui, sans-serif;
 }
+
+
+.speech-bubble {
+  position: relative; /* Essential for positioning the pseudo-element */
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px; /* Example margin for spacing */
+  max-width: 300px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -20px; /* Adjust this value to control arrow length */
+  left: 50%; /* Center the arrow horizontally */
+  transform: translateX(-50%); /* Fine-tune horizontal centering */
+  border-top: 20px solid theme('colors.amber.200'); /* Arrow color matches bubble */
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+}

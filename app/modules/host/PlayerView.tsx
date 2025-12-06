@@ -29,11 +29,12 @@ export default function PlayerView(props: PlayerViewProps){
     }
 
     const correctAnswer = () => {
-        // TODO: send score back to the server here
-        if(props.selectedPlayer === "triangle"){
+        if(props.selectedPlayer === "triangle" && !triangle){
+            props.socket.emit("addScore", "triangle")
             props.socket.emit("setTriangle", props.playerId, true)
         }
-        else{
+        else if(!circle){
+            props.socket.emit("addScore", "circle")
             props.socket.emit("setCircle", props.playerId, true)
         }
         // TODO: Play ding sfx
@@ -42,10 +43,12 @@ export default function PlayerView(props: PlayerViewProps){
 
     const incorrectAnswer = () => {
         // TODO: send score back to the server here
-        if(props.selectedPlayer === "triangle"){
+        if(props.selectedPlayer === "triangle" && triangle){
+            props.socket.emit("subScore", "triangle")
             props.socket.emit("setTriangle", props.playerId, false)
         }
-        else{
+        else if(circle){
+            props.socket.emit("subScore", "circle")
             props.socket.emit("setCircle", props.playerId, false)
         }
         // TODO: Play buzz sfx

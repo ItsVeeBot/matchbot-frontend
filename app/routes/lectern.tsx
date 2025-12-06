@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Route } from "./+types/lectern";
 import PlayerLectern from "~/modules/lectern/PlayerLectern";
+import { socket } from "~/socket"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -15,6 +16,43 @@ export default function Lectern(){
     const [circleName, setCircleName] = useState("Circle")
     const [triangleAnswer, setTriangleAnswer] = useState("Triangle Answer Text")
     const [circleAnswer, setCircleAnswer] = useState("Circle Answer Text")
+
+    useEffect(()=>{
+        socket.emit("subscribe", "lectern")
+
+        const handleAdd = (player: string) => {
+            if (player === "triangle") {
+                setTriangleScore(prev => prev + 1)
+            } else {
+                setCircleScore(prev => prev + 1)
+            }
+        }
+
+        const handleSub = (player: string) => {
+            if (player === "triangle") {
+                setTriangleScore(prev => prev - 1)
+            } else {
+                setCircleScore(prev => prev - 1)
+            }
+        }
+
+        const handleReset = (player: string) => {
+            if (player === "triangle") {
+                setTriangleScore(0)
+            } else {
+                setCircleScore(0)
+            }
+        }
+
+        socket.on("addScore", handleAdd)
+        socket.on("subScore", handleSub)
+        socket.on("resetScore", handleReset)
+        return ()=>{
+            socket.off("addScore", handleAdd)
+            socket.off("subScore", handleSub)
+            socket.off("resetScore", handleReset)
+        }
+    }, [])
 
     return(
         <div className="flex gap-6 w-full h-screen justify-center items-end">

@@ -20,6 +20,8 @@ export default function Host() {
   }
 
   const resetAllScores = () => {
+    socket.emit("resetScore", "triangle")
+    socket.emit("resetScore", "circle")
     for(let i=1; i<=6; i++){
       socket.emit("setTriangle", i.toString(), false)
       socket.emit("setCircle", i.toString(), false)
