@@ -4,7 +4,8 @@ import IonIconClient from "~/modules/IonIconClient"
 
 interface PlayerViewProps{
     playerId: string,
-    socket: Socket
+    socket: Socket,
+    selectedPlayer: string
 }
 
 export default function PlayerView(props: PlayerViewProps){
@@ -23,6 +24,30 @@ export default function PlayerView(props: PlayerViewProps){
 
     const sendName = () => {
         props.socket.emit("setName", props.playerId, playerName)
+    }
+
+    const correctAnswer = () => {
+        // TODO: send score back to the server here
+        if(props.selectedPlayer === "triangle"){
+            props.socket.emit("setTriangle", props.playerId, true)
+        }
+        else{
+            props.socket.emit("setCircle", props.playerId, true)
+        }
+        // TODO: Play ding sfx
+        props.socket.emit("setLocked", props.playerId, false)
+    }
+
+    const incorrectAnswer = () => {
+        // TODO: send score back to the server here
+        if(props.selectedPlayer === "triangle"){
+            props.socket.emit("setTriangle", props.playerId, false)
+        }
+        else{
+            props.socket.emit("setCircle", props.playerId, false)
+        }
+        // TODO: Play buzz sfx
+        props.socket.emit("setLocked", props.playerId, false)
     }
 
     useEffect(()=>{
@@ -86,10 +111,10 @@ export default function PlayerView(props: PlayerViewProps){
                 </div>
             </div>
             <div className="flex justify-center">
-                <button className="flex rounded-md bg-green-400 m-2 p-2">
+                <button className="flex rounded-md bg-green-400 m-2 p-2" onClick={correctAnswer}>
                         <IonIconClient name="checkmark" className="text-4xl" />
                 </button>
-                <button className="flex rounded-md bg-red-400 m-2 p-2">
+                <button className="flex rounded-md bg-red-400 m-2 p-2" onClick={incorrectAnswer}>
                         <IonIconClient name="close" className="text-4xl" />
                 </button>
                 <button className="flex rounded-md bg-blue-400 m-2 p-2">
