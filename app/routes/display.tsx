@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import type { Route } from "./+types/display";
 import { animated, useSpring } from "@react-spring/web"
 import IonIconClient from "~/modules/IonIconClient";
+import { socket } from "~/socket"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -11,6 +12,14 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Display({params}: Route.ComponentProps) {
 
+    if(params.playerId.toLowerCase()==="all"){
+        return(
+        <>
+            no.
+        </>
+        )
+    }
+
     const [visible, setVisible] = useState(false)
     const [playerName, setPlayerName] = useState("Panelist "+params.playerId)
     const [cardText, setCardText] = useState("...")
@@ -19,6 +28,38 @@ export default function Display({params}: Route.ComponentProps) {
     const [locked, setLocked] = useState(false)
 
     const buttonClass = "rounded-md bg-blue-400 p-2 "
+
+    // Handle incoming commands from the server
+    useEffect(()=>{
+        socket.emit("subscribe", params.playerId)
+        socket.on("setVisible", (_, visibility: boolean)=>{
+            setVisible(visibility)
+        })
+        socket.on("setTriangle", (_, state: boolean)=>{
+            setTriangle(state)
+        })
+        socket.on("setCircle", (_, state: boolean)=>{
+            setCircle(state)
+        })
+        socket.on("setLocked", (_, state: boolean)=>{
+            setLocked(state)
+        })
+        socket.on("setName", (_, text: string)=>{
+            setPlayerName(text)
+        })
+        socket.on("submit", (_, text: string)=>{
+            setCardText(text)
+        })
+
+        return () => {
+            socket.off("setVisible")
+            socket.off("setTriangle")
+            socket.off("setCircle")
+            socket.off("setLocked")
+            socket.off("setName")
+            socket.off("submit")
+        }
+    }, [])
 
     // useSpring updates when `visible` changes if we pass an object that references it
     const props = useSpring({
@@ -55,7 +96,7 @@ export default function Display({params}: Route.ComponentProps) {
                 <IonIconClient name="ellipse" size="large" className={`text-8xl ${circle ? "text-red-300" : "text-red-800"}`} />
             </div>
         </div>
-        <div className="flex gap-4">
+        <div className="hidden gap-4">
             <button className={buttonClass} onClick={()=>{setVisible(!visible)}}>{visible ? "Hide Card" : "Show Card"}</button>
             <button className={buttonClass} onClick={()=>{setTriangle(!triangle)}}>{triangle ? "Triangle Off" : "Triangle On"}</button>
             <button className={buttonClass} onClick={()=>{setCircle(!circle)}}>{circle ? "Circle Off" : "Circle On"}</button>

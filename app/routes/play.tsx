@@ -1,6 +1,8 @@
-import { useState, type ChangeEvent} from "react";
+import { useEffect, useState, type ChangeEvent} from "react";
 import type { Route } from "./+types/play";
 import IonIconClient from "~/modules/IonIconClient";
+import { socket } from "~/socket"
+
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -11,9 +13,45 @@ export function meta({}: Route.MetaArgs) {
 
 
 export default function Play({params}: Route.ComponentProps) {
+
+    if(params.playerId.toLowerCase()==="all"){
+        return(
+        <>
+            no.
+        </>
+        )
+    }
+
     const [cardValue, setCardValue] = useState("")
     const [cardLocked, setCardLocked] = useState(false)
     const [cardVisible, setCardVisible] = useState(false)
+
+
+    // Listen for when the server unlocks me.
+    useEffect(()=>{
+        socket.emit("subscribe", params.playerId)
+        socket.on("setLocked", (_, state)=>{
+            setCardLocked(state)
+            setCardVisible(false)
+        })
+
+        return()=>{
+            socket.off("setLocked")
+        }
+    }, [])
+
+    // When card is locked, send the text to the server.
+    useEffect(()=>{
+        if(cardLocked){
+            socket.emit("submit", params.playerId, cardValue)
+        }
+        socket.emit("setLocked", params.playerId, cardLocked)
+    }, [cardLocked])
+    
+    // When card visibility is toggled, send the state to the server.
+    useEffect(()=>{
+        socket.emit("setVisible", params.playerId, cardVisible)
+    }, [cardVisible])
 
     const handleCardUpdate = (event: ChangeEvent<HTMLDivElement>) => {
         setCardValue(event.currentTarget.innerText)
