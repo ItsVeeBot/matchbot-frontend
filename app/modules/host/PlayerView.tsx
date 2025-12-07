@@ -37,7 +37,7 @@ export default function PlayerView(props: PlayerViewProps){
             props.socket.emit("addScore", "circle")
             props.socket.emit("setCircle", props.playerId, true)
         }
-        // TODO: Play ding sfx
+        props.socket.emit("playSound", "ding", 0)
         props.socket.emit("setLocked", props.playerId, false)
     }
 
@@ -51,7 +51,7 @@ export default function PlayerView(props: PlayerViewProps){
             props.socket.emit("subScore", "circle")
             props.socket.emit("setCircle", props.playerId, false)
         }
-        // TODO: Play buzz sfx
+        props.socket.emit("playSound", "buzz", 0)
         props.socket.emit("setLocked", props.playerId, false)
     }
 
