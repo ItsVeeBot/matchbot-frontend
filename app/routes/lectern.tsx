@@ -47,10 +47,25 @@ export default function Lectern(){
         socket.on("addScore", handleAdd)
         socket.on("subScore", handleSub)
         socket.on("resetScore", handleReset)
+        socket.on("answer", (userShape, msg)=>{
+            if(userShape === "triangle"){
+                setTriangleAnswer(msg)
+            }
+            else{
+                setCircleAnswer(msg)
+            }
+        })
+        socket.on("requestTwitchPlayers", (triangleName, circleName)=>{
+            setTriangleName(triangleName)
+            setCircleName(circleName)
+        })
+
         return ()=>{
             socket.off("addScore", handleAdd)
             socket.off("subScore", handleSub)
             socket.off("resetScore", handleReset)
+            socket.off("answer")
+            socket.off("requestTwitchPlayers")
         }
     }, [])
 
