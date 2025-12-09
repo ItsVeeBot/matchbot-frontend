@@ -2,7 +2,7 @@
 [build]
   command = "npm run build"
   functions = "netlify/functions"
-  publish = "build/client"
+  publish = "build/server"
 
   ## Uncomment to use this redirect for Single Page Applications like create-react-app.
   ## Not needed for static site generators.
@@ -19,3 +19,5 @@
   #  publish = "dist" # Folder with the static content for _redirect file
 
   ## more info on configuring this file: https://ntl.fyi/file-based-build-config
+
+echo "/socket.io/* $VITE_SERVER_URL/:splat 200" > _redirects
