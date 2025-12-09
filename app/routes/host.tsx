@@ -15,6 +15,9 @@ export default function Host() {
 
   const [selectedPlayer, setSelectedPlayer] = useState('triangle')
 
+  const [lecternCopied, setLecternCopied] = useState(false)
+  const [sfxCopied, setSfxCopied] = useState(false)
+
   const handleSelectPlayer = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedPlayer(event.target.value)
   }
@@ -68,6 +71,28 @@ export default function Host() {
     socket.emit("subscribe", "all")
   }, [])
   
+  const copyLecternToClipboard = () => {
+        setLecternCopied(true)
+        navigator.clipboard.writeText(window.location.origin+"/lectern")
+    }
+    useEffect(() => {
+        if (lecternCopied) {
+            const timer = setTimeout(() => setLecternCopied(false), 2000)
+            return () => clearTimeout(timer)
+        }
+    }, [lecternCopied])
+
+  const copySfxToClipboard = () => {
+        setSfxCopied(true)
+        navigator.clipboard.writeText(window.location.origin+"/sfx")
+    }
+    useEffect(() => {
+        if (sfxCopied) {
+            const timer = setTimeout(() => setSfxCopied(false), 2000)
+            return () => clearTimeout(timer)
+        }
+    }, [sfxCopied])
+
   const buttonClass = "rounded-md bg-blue-400 p-2 w-full"
 
   const playerViews = []
@@ -129,6 +154,17 @@ export default function Host() {
                 <button className={buttonClass} onClick={()=>{playThink(3)}}>3</button>
                 <button className={buttonClass} onClick={()=>{playThink(4)}}>4</button>
               </div>
+            </div>
+          </div>
+          <div className="border border-default rounded-lg">
+            <div className="font-semibold">Other URLs</div>
+            <div className="border-t rounded-lg p-2 flex flex-col gap-2">
+              <button className="flex rounded-md bg-blue-400 m-2 p-2" onClick={copyLecternToClipboard}>
+                      <IonIconClient name={lecternCopied ? "checkmark" : "people"} className="text-4xl" />
+              </button>
+              <button className="flex rounded-md bg-blue-400 m-2 p-2" onClick={copySfxToClipboard}>
+                      <IonIconClient name={sfxCopied ? "checkmark" : "volume-high"} className="text-4xl" />
+              </button>
             </div>
           </div>
         </div>
