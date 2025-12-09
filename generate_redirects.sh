@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo "/socket.io/* $VITE_SERVER_URL/:splat 200" > public/_redirects
-cat public/_redirects
+echo "/socket.io/* $VITE_SERVER_URL/:splat 200" > _redirects
+cat _redirects
