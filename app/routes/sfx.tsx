@@ -16,10 +16,10 @@ export default function Sfx(){
     const buzzSound = new Howl({src:"/matchbuzz.wav"})
 
     const thinkSounds = [
-        new Howl({src:"/Think1.mp3"}),
-        new Howl({src:"/Think2.mp3"}),
-        new Howl({src:"/Think3.mp3"}),
-        new Howl({src:"/Think4.mp3"})
+        new Howl({src:"/Think1.mp3", loop:true}),
+        new Howl({src:"/Think2.mp3", loop:true}),
+        new Howl({src:"/Think3.mp3", loop:true}),
+        new Howl({src:"/Think4.mp3", loop:true})
     ]
 
     useEffect(()=>{
@@ -33,8 +33,11 @@ export default function Sfx(){
             }
             else if(sound==="random"){
                 //Choose a random thinkSound and play it.
+                console.log("Random think music GO")
+                thinkSounds[Math.floor(Math.random()*thinkSounds.length)].play()
             }
             else if(sound==="think"){
+                console.log("Think music #", think)
                 thinkSounds[think-1].play()
             }
         })
@@ -43,8 +46,9 @@ export default function Sfx(){
                 if(element.playing()){
                     element.once("fade", ()=>{
                         element.stop()
+                        element.volume(1)
                     })
-                    element.fade(1.0, 0.0, 1.0)
+                    element.fade(1.0, 0.0, 1000)
                 }
             });
         })

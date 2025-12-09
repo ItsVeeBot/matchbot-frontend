@@ -6,6 +6,7 @@ interface PlayerLecternProps{
     iconColorOff: string,
     iconColorOn: string,
     playerName: string,
+    playerImageUrl: string,
     playerAnswer: string
 }
 
@@ -23,8 +24,9 @@ export default function PlayerLectern(props: PlayerLecternProps){
                         {props.playerAnswer}
                     </div>
             }
-            <div>
+            <div className="flex flex-col text-center text-2xl">
                 {props.playerName}
+                <img className="rounded-2xl aspect-square object-cover" src={props.playerImageUrl} height={200} width={200} />
             </div>
             <div className="justify-center">
                 <div className="bg-black w-fit">

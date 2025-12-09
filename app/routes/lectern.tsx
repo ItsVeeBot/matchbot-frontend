@@ -14,8 +14,10 @@ export default function Lectern(){
     const [circleScore, setCircleScore] = useState(0)
     const [triangleName, setTriangleName] = useState("Triangle")
     const [circleName, setCircleName] = useState("Circle")
-    const [triangleAnswer, setTriangleAnswer] = useState("Triangle Answer Text")
-    const [circleAnswer, setCircleAnswer] = useState("Circle Answer Text")
+    const [triangleImageUrl, setTriangleImageUrl] = useState("MGLogo.webp")
+    const [circleImageUrl, setCircleImageUrl] = useState("MGLogo.webp")
+    const [triangleAnswer, setTriangleAnswer] = useState("")
+    const [circleAnswer, setCircleAnswer] = useState("")
 
     useEffect(()=>{
         socket.emit("subscribe", "lectern")
@@ -55,9 +57,11 @@ export default function Lectern(){
                 setCircleAnswer(msg)
             }
         })
-        socket.on("requestTwitchPlayers", (triangleName, circleName)=>{
+        socket.on("requestTwitchPlayers", (triangleName, triangleImageUrl, circleName, circleImageUrl)=>{
             setTriangleName(triangleName)
+            setTriangleImageUrl(triangleImageUrl)
             setCircleName(circleName)
+            setCircleImageUrl(circleImageUrl)
         })
 
         return ()=>{
@@ -71,8 +75,8 @@ export default function Lectern(){
 
     return(
         <div className="flex gap-6 w-full h-screen justify-center items-end">
-            <PlayerLectern score={triangleScore} iconName="triangle" iconColorOff="text-green-800" iconColorOn="text-green-300" playerName={triangleName} playerAnswer={triangleAnswer}/>
-            <PlayerLectern score={circleScore} iconName="ellipse" iconColorOff="text-red-800" iconColorOn="text-red-300" playerName={circleName} playerAnswer={circleAnswer} />
+            <PlayerLectern score={triangleScore} iconName="triangle" iconColorOff="text-green-800" iconColorOn="text-green-300" playerName={triangleName} playerImageUrl={triangleImageUrl} playerAnswer={triangleAnswer}/>
+            <PlayerLectern score={circleScore} iconName="ellipse" iconColorOff="text-red-800" iconColorOn="text-red-300" playerName={circleName} playerImageUrl={circleImageUrl} playerAnswer={circleAnswer} />
         </div>
     )
 }

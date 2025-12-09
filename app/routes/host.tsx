@@ -27,7 +27,43 @@ export default function Host() {
       socket.emit("setCircle", i.toString(), false)
     }
   }
-  
+
+  const openTwitchSignups = ()=>{
+    socket.emit("openTwitchSignups")
+  }
+
+  const closeTwitchSignups = ()=>{
+    socket.emit("closeTwitchSignups")
+  }
+
+  const clearTwitchSignups = ()=>{
+    socket.emit("clearTwitchSignups")
+  }
+
+  const requestTwitchPlayers = ()=>{
+    socket.emit("requestTwitchPlayers")
+  }
+
+  const requestTwitchAnswer = ()=>{
+    socket.emit("requestTwitchAnswer", selectedPlayer)
+  }
+
+  const clearAnswers = ()=>{
+    socket.emit("clearAnswers")
+  }
+
+  const stopSounds = ()=>{
+    socket.emit("stopSounds")
+  }
+
+  const playRandom = ()=>{
+    socket.emit("playSound", "random", 0)
+  }
+
+  const playThink = (think:number)=>{
+    socket.emit("playSound", "think", think)
+  }
+
   useEffect(()=>{
     socket.emit("subscribe", "all")
   }, [])
@@ -65,34 +101,33 @@ export default function Host() {
             <div className="font-semibold">Game Controls</div>
             <div className="border-t rounded-lg p-2 flex flex-col gap-2">
               <button className={buttonClass} onClick={resetAllScores}>Reset all scores</button>
+              <button className={buttonClass} onClick={requestTwitchAnswer}>Request Answer</button>
+              <button className={buttonClass} onClick={clearAnswers}>Clear Answers</button>
             </div>
           </div>
           <div className="border border-default rounded-lg">
             <div className="font-semibold">Twitch Integration Controls</div>
             <div className="border-t rounded-lg p-2 flex flex-col gap-2">
               <div className="flex gap-2">
-                <button className={buttonClass}>Connect Twitch</button>
-                <button className={buttonClass}>Clear Signups</button>
+                <button className={buttonClass} onClick={openTwitchSignups}>Open Signups</button>
+                <button className={buttonClass} onClick={closeTwitchSignups}>Close Signups</button>
               </div>
               <div className="flex gap-2">
-                <button className={buttonClass}>Open Signups</button>
-                <button className={buttonClass}>Close Signups</button>
-              </div>
-              <div className="flex gap-2">
-                <button className={buttonClass}>Select Players</button>
+                <button className={buttonClass} onClick={requestTwitchPlayers}>Select Players</button>
+                <button className={buttonClass} onClick={clearTwitchSignups}>Clear Signups</button>
               </div>
             </div>
           </div>
           <div className="border border-default rounded-lg">
             <div className="font-semibold">Think Music Controls</div>
             <div className="border-t rounded-lg p-2 flex flex-col gap-2">
-              <button className={buttonClass}>Stop</button>
-              <button className={buttonClass}>Random</button>
+              <button className={buttonClass} onClick={stopSounds}>Stop</button>
+              <button className={buttonClass} onClick={playRandom}>Random</button>
               <div className="flex gap-2">
-                <button className={buttonClass}>1</button>
-                <button className={buttonClass}>2</button>
-                <button className={buttonClass}>3</button>
-                <button className={buttonClass}>4</button>
+                <button className={buttonClass} onClick={()=>{playThink(1)}}>1</button>
+                <button className={buttonClass} onClick={()=>{playThink(2)}}>2</button>
+                <button className={buttonClass} onClick={()=>{playThink(3)}}>3</button>
+                <button className={buttonClass} onClick={()=>{playThink(4)}}>4</button>
               </div>
             </div>
           </div>
