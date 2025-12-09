@@ -61,7 +61,7 @@ export default function Sfx(){
 
     return(
         <>
-            click on this page to start sounds lmao
+            
         </>
     )
 }
