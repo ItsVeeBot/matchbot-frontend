@@ -33,7 +33,7 @@ export default function PlayerView(props: PlayerViewProps){
             props.socket.emit("addScore", "triangle")
             props.socket.emit("setTriangle", props.playerId, true)
         }
-        else if(!circle){
+        else if(props.selectedPlayer === "circle" && !circle){
             props.socket.emit("addScore", "circle")
             props.socket.emit("setCircle", props.playerId, true)
         }
@@ -47,7 +47,7 @@ export default function PlayerView(props: PlayerViewProps){
             props.socket.emit("subScore", "triangle")
             props.socket.emit("setTriangle", props.playerId, false)
         }
-        else if(circle){
+        else if(props.selectedPlayer === "circle" && circle){
             props.socket.emit("subScore", "circle")
             props.socket.emit("setCircle", props.playerId, false)
         }
