@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const distDir = './dist';
+const distDir = './build/client';
 const headersFile = path.join(distDir, '_headers');
 
 const basicAuthCredentials = process.env.BASIC_AUTH_CREDENTIALS;
@@ -11,7 +11,9 @@ if (!basicAuthCredentials) {
   process.exit(0);
 }
 
-const headersContent = `/*
+const headersContent = `/play
+  Basic-Auth: ${basicAuthCredentials}
+/host
   Basic-Auth: ${basicAuthCredentials}
 `;
 
