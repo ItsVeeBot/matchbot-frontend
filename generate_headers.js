@@ -11,7 +11,7 @@ if (!basicAuthCredentials) {
   process.exit(0);
 }
 
-const headersContent = `/play
+const headersContent = `/*
   Basic-Auth: ${basicAuthCredentials}
 /host
   Basic-Auth: ${basicAuthCredentials}
