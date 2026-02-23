@@ -24,7 +24,7 @@ export default function PlayerLectern(props: PlayerLecternProps){
                         {props.playerAnswer}
                     </div>
             }
-            <div className="flex flex-col text-center text-2xl">
+            <div className="flex flex-col text-center font-extrabold text-5xl">
                 {props.playerName}
                 <img className="rounded-2xl aspect-square object-cover" src={props.playerImageUrl} height={200} width={200} />
             </div>
