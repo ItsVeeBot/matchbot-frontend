@@ -20,11 +20,11 @@ export default function PlayerLectern(props: PlayerLecternProps){
     return(
         <div className="flex flex-col items-center">
             {props.playerAnswer &&
-                    <div className="bg-amber-200 speech-bubble text-xl">
+                    <div className="bg-amber-200 speech-bubble text-8xl">
                         {props.playerAnswer}
                     </div>
             }
-            <div className="flex flex-col text-center font-extrabold text-5xl">
+            <div className="flex flex-col items-center justify-center text-center font-extrabold text-5xl">
                 {props.playerName}
                 <img className="rounded-2xl aspect-square object-cover" src={props.playerImageUrl} height={200} width={200} />
             </div>

@@ -81,7 +81,7 @@ export default function Display({params}: Route.ComponentProps) {
             }}
             className="flex w-[880px] h-[480px] bg-blue-300 p-10"
         >
-            <div className="flex border-8 border-blue-800 w-full h-full justify-center items-center text-center text-7xl font-hand">
+            <div className="flex border-8 border-blue-800 w-full h-full justify-center items-center text-center text-9xl font-hand">
                 {cardText}
             </div>
         </animated.div>
